@@ -4,12 +4,19 @@ import time
 import praw
 import json
 import pandas as pd
+from selenium.webdriver.common.keys import Keys
 
-global reddit_read_only
+from undetected_chromedriver import Chrome
 
-global reddit
 
- 
+subreddit_list = ['FreeKarma4You', 'csMajors']
+
+reddit_read_only = praw.Reddit(client_id = "fy4lfFdgNJIfwCKqg3Xi1A", client_secret = 'BPOLUIxWJZW8oKtlUQkXNaP6-qZPQg', user_agent = "Weak")
+reddit = praw.Reddit(client_id ='fy4lfFdgNJIfwCKqg3Xi1A', 
+                     client_secret ='BPOLUIxWJZW8oKtlUQkXNaP6-qZPQg', 
+                     user_agent ='Weak', 
+                     username ='StanfordStudent112', 
+                     password ='Temp1!')
 
 def get_relevant_text(subreddit):
     dict = []
@@ -34,26 +41,71 @@ def post_to_subreddit(sub, title, text):
 
 def main():
     #input handling
-    client_id = input("Enter Client_id: ")
-    client_secret = input_("Enter Client_secret") 
-    user_agent = input("Enter User_Secret")
-    username = input("Enter username")
-    password = input("Enter Password")
-
-    reddit_read_only = praw.Reddit(client_id, client_secret, user_agent)
-    reddit = praw.Reddit(client_id, client_secret, user_agent, username, password)
-
-    #get relevant text
-    dict = parse_text(get_relevant_text("csmajors"))
+    # client_id = input("Enter Client_id: ")
+    # client_secret = input_("Enter Client_secret") 
+    # user_agent = input("Enter User_Secret")
+    # username = input("Enter username")
+    # password = input("Enter Password")
     
-    #copy into chatGPT
+    
+    for subreddit in subreddit_list:
+
+        #get relevant text
+        dict = parse_text(get_relevant_text(subreddit))
 
 
-    #create new reddit post (subreddit, testing, helloworld)
-    post_to_subreddit("csmajors", "testing", "hello world")
+        for str in dict:
+            print(str)
+
+        browser = Chrome()
+        browser.get("https://chat.openai.com/")
+        time.sleep(3)
+        browser.find_element('xpath','//*[@id="__next"]/div/div/div[4]/button[1]').click()
+        time.sleep(3)
+        browser.find_element('xpath', '/html/body/main/section/div/div/div/div[3]/form[1]/button/span[2]').click()
+        time.sleep(3)
+        element = browser.find_element('xpath', '//*[@id="identifierId"]')
+        time.sleep(3)
+        element.send_keys('willy200335')
+        time.sleep(3)
+        browser.find_element('xpath', '//*[@id="identifierNext"]/div/button/span').click()
+        time.sleep(3)
+        password = browser.find_element('xpath', '//*[@id="password"]/div[1]/div/div[1]/input')
+        time.sleep(3)
+        password.send_keys('weiho920305')
+        time.sleep(3)
+        browser.find_element('xpath', '//*[@id="passwordNext"]/div/button/span').click()
+        time.sleep(3)
+
+
+        browser.find_element('xpath','//*[@id="headlessui-dialog-panel-:r1:"]/div[2]/div[4]/button').click()
+        time.sleep(3)
+        browser.find_element('xpath','//*[@id="headlessui-dialog-panel-:r1:"]/div[2]/div[4]/button[2]').click()
+        time.sleep(3)
+        browser.find_element('xpath','//*[@id="headlessui-dialog-panel-:r1:"]/div[2]/div[4]/button[2]').click()
+        time.sleep(3)
+        type = browser.find_element('xpath','//*[@id="__next"]/div/div[1]/main/div[2]/form/div/div[2]/textarea')
+        type.send_keys('hello world')
+        type.send_keys(Keys.RETURN)
+
+
+        time.sleep(100)
+
+
+        browser.close()
+        #get title and body from chatGPT
+        title = ""
+        body = ""
+
+        #create new reddit post (subreddit, testing, helloworld)
+        #post_to_subreddit(subreddit, title , body)
+        time.sleep(10)
+
 
 if __name__ == "__main__":
     main()
+
+
 
 
 
