@@ -5,9 +5,11 @@ import praw
 import json
 import pandas as pd
 
-reddit_read_only = praw.Reddit(client_id="xmAsnL6OKfcL6I20P0txag",         
-                               client_secret="dWL6xW-kue5LoolcziQDdu6kqx-baw",    
-                               user_agent="nsiyu")
+global reddit_read_only
+
+global reddit
+
+ 
 
 def get_relevant_text(subreddit):
     dict = []
@@ -26,26 +28,32 @@ def parse_text(dict):
                 n_names[1].replace(char,' ')
     return n_names
 
-def post_to_subreddit(subreddit, title, text):
-    subreddit.post_to_subreddit(title, text)
+def post_to_subreddit(sub, title, text):
+    selftext = text
+    reddit.subreddit(sub).submit(title, selftext = selftext)
 
 def main():
+    #input handling
+    client_id = input("Enter Client_id: ")
+    client_secret = input_("Enter Client_secret") 
+    user_agent = input("Enter User_Secret")
+    username = input("Enter username")
+    password = input("Enter Password")
+
+    reddit_read_only = praw.Reddit(client_id, client_secret, user_agent)
+    reddit = praw.Reddit(client_id, client_secret, user_agent, username, password)
+
     #get relevant text
     dict = parse_text(get_relevant_text("csmajors"))
     
     #copy into chatGPT
-    
+
+
     #create new reddit post (subreddit, testing, helloworld)
     post_to_subreddit("csmajors", "testing", "hello world")
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
 
 
 
