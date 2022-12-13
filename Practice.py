@@ -24,9 +24,10 @@ def parse_text(dict):
         for char in n_names[i]:
             if char in " [] ":
                 n_names[1].replace(char,' ')
-    for i in range(len(n_names)):
-        print(n_names[i])
     return n_names
+
+def post_to_subreddit(subreddit, title, text):
+    subreddit.post_to_subreddit(title, text)
 
 def main():
     #get relevant text
@@ -34,10 +35,9 @@ def main():
     
     #copy into chatGPT
     
+    #create new reddit post (subreddit, testing, helloworld)
+    post_to_subreddit("csmajors", "testing", "hello world")
 
-    #create new reddit post
-    
-    
 if __name__ == "__main__":
     main()
 
