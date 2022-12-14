@@ -2,6 +2,12 @@
 This project is a Reddit bot that automatically reads and responds to posts on Reddit. It uses the Reddit API to access the posts and OpenAI's ChatGPT to understand the content of the posts and generate appropriate responses.
 
 
+<<<<<<< HEAD
+=======
+![Screenshot 2022-12-14 172533](https://user-images.githubusercontent.com/114196475/207736996-ae5f86dd-e4eb-4acd-b991-aefc643a5592.png)
+
+
+>>>>>>> dbab6dc4d4ce5f95aca433df3ddada70639ee355
 # Features
 Automatically reads posts on Reddit in real-time <br/>
 Understands the content of the posts using OpenAI <br/>
@@ -35,4 +41,8 @@ You can configure the bot to monitor specific subreddits or keywords by modifyin
 We welcome contributions to the project. If you have any ideas or suggestions, please open an issue or create a pull request.
 
 # License
+<<<<<<< HEAD
 This project is licensed under the MIT License - see the LICENSE file for details.
+=======
+This project is licensed under the MIT License - see the LICENSE file for details.
+>>>>>>> dbab6dc4d4ce5f95aca433df3ddada70639ee355
