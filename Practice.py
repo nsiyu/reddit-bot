@@ -29,7 +29,7 @@ def get_relevant_text(subreddit):
 def comment_on_post(sub, message):
     subreddit = reddit.subreddit(sub)
     for post in subreddit.hot(limit=3):
-        if hasattr(comment, "body"):
+        if hasattr(post, "body"):
             post.reply(message)
 
 def parse_text(dict):
@@ -97,15 +97,19 @@ def main():
         type = browser.find_element('xpath','//*[@id="__next"]/div/div[1]/main/div[2]/form/div/div[2]/textarea')
         type.send_keys("Please respond to this post: ")
         type.send_keys(body)
-        time.sleep(50)
         type.send_keys(Keys.RETURN)
+        time.sleep(20)
+        
 
+        comment = (browser.find_element(By.XPATH ,'//*[@id="__next"]/div/div[1]/main/div[1]/div/div/div/div[2]/div/div[2]/div[1]/div/p').text)
+        print(comment)
         time.sleep(3)
+        
         browser.close()
         #get title and body from chatGPT
         
 
-        comment = "Hello World"
+        
         #comment_on_post(subreddit, comment)
 
         #create new reddit post (subreddit, testing, helloworld)
