@@ -4,26 +4,33 @@ import time
 import praw
 import json
 import pandas as pd
+import random
 from selenium.webdriver.common.keys import Keys
 
 from undetected_chromedriver import Chrome
 
 
-subreddit_list = ['FreeKarma4You', 'csMajors']
+subreddit_list = ['csMajors']
 
 reddit_read_only = praw.Reddit(client_id = "fy4lfFdgNJIfwCKqg3Xi1A", client_secret = 'BPOLUIxWJZW8oKtlUQkXNaP6-qZPQg', user_agent = "Weak")
 reddit = praw.Reddit(client_id ='fy4lfFdgNJIfwCKqg3Xi1A', 
                      client_secret ='BPOLUIxWJZW8oKtlUQkXNaP6-qZPQg', 
                      user_agent ='Weak', 
                      username ='StanfordStudent112', 
-                     password ='Temp1!')
+                     password ='Temppass!')
 
 def get_relevant_text(subreddit):
     dict = []
     subreddit = reddit_read_only.subreddit(subreddit)
-    for post in subreddit.hot(limit=10):
+    for post in subreddit.hot(limit=3):
         dict.append(post.selftext)
     return dict
+
+def comment_on_post(sub, message):
+    subreddit = reddit.subreddit(sub)
+    for post in subreddit.hot(limit=3):
+        if hasattr(comment, "body"):
+            post.reply(message)
 
 def parse_text(dict):
     dict.pop(0)
@@ -31,8 +38,8 @@ def parse_text(dict):
     n_names = ["{}\n".format(i) for i in dict]
     for i in range(len(n_names)):
         for char in n_names[i]:
-            if char in " [] ":
-                n_names[1].replace(char,' ')
+            if char in " []\\:*🫡~ ":
+                n_names[i].replace(char,' ')
     return n_names
 
 def post_to_subreddit(sub, title, text):
@@ -46,16 +53,18 @@ def main():
     # user_agent = input("Enter User_Secret")
     # username = input("Enter username")
     # password = input("Enter Password")
-    
-    
-    for subreddit in subreddit_list:
 
+    for subreddit in subreddit_list:
         #get relevant text
         dict = parse_text(get_relevant_text(subreddit))
-
+        body = ""
 
         for str in dict:
-            print(str)
+            body += str
+        
+        for char in body:
+            if char in "[]\\:*🫡~":
+                body = body.replace(char, '')
 
         browser = Chrome()
         browser.get("https://chat.openai.com/")
@@ -84,18 +93,20 @@ def main():
         time.sleep(3)
         browser.find_element('xpath','//*[@id="headlessui-dialog-panel-:r1:"]/div[2]/div[4]/button[2]').click()
         time.sleep(3)
+
         type = browser.find_element('xpath','//*[@id="__next"]/div/div[1]/main/div[2]/form/div/div[2]/textarea')
-        type.send_keys('hello world')
+        type.send_keys("Please respond to this post: ")
+        type.send_keys(body)
+        time.sleep(50)
         type.send_keys(Keys.RETURN)
 
-
-        time.sleep(100)
-
-
+        time.sleep(3)
         browser.close()
         #get title and body from chatGPT
-        title = ""
-        body = ""
+        
+
+        comment = "Hello World"
+        #comment_on_post(subreddit, comment)
 
         #create new reddit post (subreddit, testing, helloworld)
         #post_to_subreddit(subreddit, title , body)
@@ -104,6 +115,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
 
 
 
@@ -125,7 +140,7 @@ if __name__ == "__main__":
 # time.sleep(5)
   
 # # Obtain button by link text and click.
-# element = driver.find_element('xpath','//*[@id="t3_zkaa17"]/div[3]/div[3]/a/div/div/div[1]')
+# element = driver.find_element('xpath','//*[@id="__next"]/div/div/div[4]/button[1]')
 # element.click()
 
 # time.sleep(5)
