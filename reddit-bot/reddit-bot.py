@@ -8,16 +8,8 @@ import praw
 import json
 import pandas as pd
 import random
-import pyperclip
 
 #subreddit_list = ['csMajors']
-
-reddit_read_only = praw.Reddit(client_id = "LAjXfhhtrPQUDGXdxrY0Mw", client_secret = 'h9rAXbDc6FAYVx2sp8YbfI9S0YKitg', user_agent = "Weak")
-reddit = praw.Reddit(client_id ='LAjXfhhtrPQUDGXdxrY0Mw', 
-                     client_secret ='h9rAXbDc6FAYVx2sp8YbfI9S0YKitg', 
-                     user_agent ='Weak', 
-                     username ='Wangzhaojun1314', 
-                     password ='willy920305')
 
 #Gets text from n number of posts
 def get_relevant_text(subreddit):
@@ -40,6 +32,7 @@ def parse_text(post):
     for char in post:
         if char in " []\\:*🫡~ ":
             post.replace(char,' ')
+    post.replace('\n', ' ')
     return post
 
 #Creates a new post on specified subreddit
@@ -49,62 +42,70 @@ def post_to_subreddit(sub, title, text):
 
 def main():
     # input handling
-    # client_id = input("Enter Client_id: ")
-    # client_secret = input_("Enter Client_secret") 
-    # user_agent = input("Enter User_Secret")
-    # username = input("Enter username")
-    # password = input("Enter Password")
+    c_id = input("Enter Client_id: ")
+    c_s = input_("Enter Client_secret") 
+    u_a = input("Enter User_Secret")
+    user = input("Enter username")
+    passw = input("Enter Password")
+    global reddit_read_only
+    global reddit
+    reddit_read_only = praw.Reddit(client_id = c_id, client_secret = c_s, user_agent = u_a)
+    reddit = praw.Reddit(client_id = c_id, 
+                     client_secret = c_s, 
+                     user_agent = u_a, 
+                     username = user, 
+                     password = passw)
     subreddit = reddit.subreddit("AskReddit")
     number = 0
     for post in subreddit.hot(limit=10):
-        
         number += 1
+
         #Parses current post
-        body = parse_text(post.selftext)
-        pyperclip.copy(body)
+        body = parse_text(post.title)
+        print(body)        
 
         #Opens ChatGPT and Logs-in
         browser = Chrome()
         browser.get("https://chat.openai.com/")
-        time.sleep(2)
+        time.sleep(3)
         browser.find_element('xpath','//*[@id="__next"]/div/div/div[4]/button[1]').click()
-        time.sleep(2)
+        time.sleep(3)
         browser.find_element('xpath', '/html/body/main/section/div/div/div/div[3]/form[1]/button/span[2]').click()
-        time.sleep(2)
+        time.sleep(3)
         element = browser.find_element('xpath', '//*[@id="identifierId"]')
-        time.sleep(2)
-        element.send_keys('willy200335')
-        time.sleep(2)
+        time.sleep(3)
+        element.send_keys('Redditbotnumber2')
+        time.sleep(3)
         browser.find_element('xpath', '//*[@id="identifierNext"]/div/button/span').click()
-        time.sleep(2)
+        time.sleep(3)
         password = browser.find_element('xpath', '//*[@id="password"]/div[1]/div/div[1]/input')
-        time.sleep(2)
-        password.send_keys('weiho920305')
-        time.sleep(2)
+        time.sleep(3)
+        password.send_keys('botnumber2')
+        time.sleep(3)
         browser.find_element('xpath', '//*[@id="passwordNext"]/div/button/span').click()
-        time.sleep(2)
+        time.sleep(3)
         browser.find_element('xpath','//*[@id="headlessui-dialog-panel-:r1:"]/div[2]/div[4]/button').click()
-        time.sleep(2)
+        time.sleep(3)
         browser.find_element('xpath','//*[@id="headlessui-dialog-panel-:r1:"]/div[2]/div[4]/button[2]').click()
-        time.sleep(2)
+        time.sleep(3)
         browser.find_element('xpath','//*[@id="headlessui-dialog-panel-:r1:"]/div[2]/div[4]/button[2]').click()
-        time.sleep(2)
+        time.sleep(3)
 
         #Types Message to Chat GPT and Retrives Response
         type = browser.find_element('xpath','//*[@id="__next"]/div/div[1]/main/div[2]/form/div/div[2]/textarea')
         type.send_keys("Please respond to this post: ")
-        time.sleep(2)
-        type.click()
-        time.sleep(2)
-        pyperclip.paste()
-        time.sleep(2)
+        type.send_keys(body)
+        time.sleep(5)
         type.send_keys(Keys.RETURN)
         time.sleep(25)
         comment = (browser.find_element(By.XPATH ,'//*[@id="__next"]/div/div[1]/main/div[1]/div/div/div/div[2]/div/div[2]/div[1]/div/p').text)
-        time.sleep(2)
+        time.sleep(3)
         browser.close()
         
         #Comments on Reddit Post
+        if "OpenAI" in comment:
+            print("Invalid Response")
+            continue
         comment_on_post(post, comment, number)
         time.sleep(5)
 
