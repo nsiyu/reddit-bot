@@ -43,10 +43,10 @@ def post_to_subreddit(sub, title, text):
 def main():
     # input handling
     c_id = input("Enter Client_id: ")
-    c_s = input_("Enter Client_secret") 
-    u_a = input("Enter User_Secret")
-    user = input("Enter username")
-    passw = input("Enter Password")
+    c_s = input("Enter Client_Secret: ")
+    u_a = input("Enter User: ")
+    user = input("Enter Username: ")
+    passw = input("Enter Pass: ")
     global reddit_read_only
     global reddit
     reddit_read_only = praw.Reddit(client_id = c_id, client_secret = c_s, user_agent = u_a)
@@ -57,7 +57,7 @@ def main():
                      password = passw)
     subreddit = reddit.subreddit("AskReddit")
     number = 0
-    for post in subreddit.hot(limit=10):
+    for post in subreddit.new(limit=100):
         number += 1
 
         #Parses current post
@@ -93,7 +93,7 @@ def main():
 
         #Types Message to Chat GPT and Retrives Response
         type = browser.find_element('xpath','//*[@id="__next"]/div/div[1]/main/div[2]/form/div/div[2]/textarea')
-        type.send_keys("Please respond to this post: ")
+        type.send_keys("Create a fictional but positive response to this question: ")
         type.send_keys(body)
         time.sleep(5)
         type.send_keys(Keys.RETURN)
