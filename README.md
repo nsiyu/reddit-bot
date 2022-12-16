@@ -30,6 +30,7 @@ Add your Reddit API keys to the config.py file.
 To use the Reddit bot, run the following command:
 ```
 python reddit-bot.py
+you will need to enter your information to access the reddit api
 ```
 You can configure the bot to monitor specific subreddits or keywords by modifying the subreddit and keywords variables in the config.py file.
 
