@@ -32,7 +32,7 @@ To use the Reddit bot, run the following command:
 python reddit-bot.py
 you will need to enter your information to access the reddit api
 ```
-You can configure the bot to monitor specific subreddits or keywords by modifying the subreddit and keywords variables in the config.py file.
+You can configure the bot to monitor specific subreddits or keywords by modifying the subreddit and variables in the config.py file.
 
 # Contributions
 We welcome contributions to the project. If you have any ideas or suggestions, please open an issue or create a pull request.
